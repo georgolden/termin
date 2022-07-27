@@ -1,29 +1,73 @@
 interface Role {
-  roleId: number;
   name: string;
+  roleId?: string;
 }
 
 interface Account {
-  accountId: number;
   login: string;
   password: string;
+  rolesId: string[];
+  accountId?: string;
 }
 
-interface Country {
-  countryId: number;
-  name: string;
+interface Action {
+  date: string;
+  comment: string;
+  actionId?: string;
 }
 
-interface City {
-  cityId: number;
+interface Doctor {
   name: string;
-  countryId: number;
+  doctorId?: string;
+}
+
+interface Reason {
+  name: string;
+  duration: number;
+  reasonId?: string;
+}
+
+interface Patient {
+  name: string;
+  surname: string;
+  gender: string;
+  phone: string;
+  birthDate: string;
+  patientId?: string;
+}
+
+interface Termin {
+  reasonId: string[];
+  patientId: string;
+  doctorId: string;
+  duration: number;
+  startTime: string;
+  endTime: string;
+  date: string;
+  created: string;
+  modified: string;
+  recalled: boolean;
+  completed: boolean;
+  approved: boolean;
+  actionsId: string[];
+  terminId?: string;
+}
+
+interface Calendar {
+  date: string;
+  startTime: string;
+  endTime: string;
+  breakStart: string;
+  breakEnd: string;
+  doctorId: string;
+  terminsId?: string[];
+  calendarId?: string;
 }
 
 interface Session {
-  sessionId: number;
-  accountId: number;
+  accountId: string;
   token: string;
   ip: string;
   data: string;
+  sessionId?: string;
 }

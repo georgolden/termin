@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import { EventEmitter } from './events.js';
 
 const CALL_TIMEOUT = 7 * 1000;
@@ -19,9 +20,21 @@ class MetacomError extends Error {
   }
 }
 
-class MetacomInterface extends EventEmitter {
+class MetacomInterface {
   constructor() {
-    super();
+    this._events = new Map();
+  }
+
+  on(name, fn) {
+    const event = this._events.get(name);
+    if (event) event.add(fn);
+    else this._events.set(name, new Set([fn]));
+  }
+
+  emit(name, ...args) {
+    const event = this._events.get(name);
+    if (!event) return;
+    for (const fn of event.values()) fn(...args);
   }
 }
 
@@ -34,9 +47,9 @@ export class Metacom extends EventEmitter {
     this.callId = 0;
     this.calls = new Map();
     this.streams = new Map();
+    this.currentStream = null;
     this.active = false;
     this.connected = false;
-    this.opening = null;
     this.lastActivity = new Date().getTime();
     this.callTimeout = options.callTimeout || CALL_TIMEOUT;
     this.pingInterval = options.pingInterval || PING_INTERVAL;
@@ -62,12 +75,11 @@ export class Metacom extends EventEmitter {
     const [callType, target] = Object.keys(packet);
     const callId = packet[callType];
     const args = packet[target];
-    if (callId) {
+    if (callId && args) {
       if (callType === 'callback') {
         const promised = this.calls.get(callId);
         if (!promised) return;
         const [resolve, reject] = promised;
-        this.calls.delete(callId);
         if (packet.error) {
           reject(new MetacomError(packet.error));
           return;
@@ -96,6 +108,7 @@ export class Metacom extends EventEmitter {
           });
           return;
         }
+        this.currentStream = stream;
       }
     }
   }
@@ -123,7 +136,6 @@ export class Metacom extends EventEmitter {
         const callId = ++this.callId;
         const interfaceName = ver ? `${iname}.${ver}` : iname;
         const target = interfaceName + '/' + methodName;
-        if (this.opening) await this.opening;
         if (!this.connected) await this.open();
         return new Promise((resolve, reject) => {
           setTimeout(() => {
@@ -142,8 +154,7 @@ export class Metacom extends EventEmitter {
 
 class WebsocketTransport extends Metacom {
   async open() {
-    if (this.opening) return this.opening;
-    if (this.connected) return Promise.reslve();
+    if (this.connected) return;
     const socket = new WebSocket(this.url);
     this.active = true;
     this.socket = socket;
@@ -154,19 +165,19 @@ class WebsocketTransport extends Metacom {
         this.message(data);
         return;
       }
+      if (!this.currentStream) return;
+      this.currentStream.chunks.push(data);
+      this.currentStream = null;
     });
 
     socket.addEventListener('close', () => {
-      this.opening = null;
       this.connected = false;
-      this.emit('close');
       setTimeout(() => {
         if (this.active) this.open();
       }, this.reconnectTimeout);
     });
 
-    socket.addEventListener('error', (err) => {
-      this.emit('error', err);
+    socket.addEventListener('error', () => {
       socket.close();
     });
 
@@ -177,15 +188,12 @@ class WebsocketTransport extends Metacom {
       }
     }, this.pingInterval);
 
-    this.opening = new Promise((resolve) => {
+    return new Promise((resolve) => {
       socket.addEventListener('open', () => {
-        this.opening = null;
         this.connected = true;
-        this.emit('open');
         resolve();
       });
     });
-    return this.opening;
   }
 
   close() {
@@ -207,7 +215,6 @@ class HttpTransport extends Metacom {
   async open() {
     this.active = true;
     this.connected = true;
-    this.emit('open');
   }
 
   close() {
@@ -221,11 +228,16 @@ class HttpTransport extends Metacom {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: data,
-    }).then((res) =>
-      res.text().then((packet) => {
-        this.message(packet);
-      }),
-    );
+    }).then((res) => {
+      const { status } = res;
+      if (status === 200) {
+        return res.text().then((packet) => {
+          if (packet.error) throw new MetacomError(packet.error);
+          this.message(packet);
+        });
+      }
+      throw new Error(`Status Code: ${status}`);
+    });
   }
 }
 

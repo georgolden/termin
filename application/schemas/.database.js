@@ -1,10 +1,10 @@
 ({
-  name: 'example',
-  description: 'Example database schema',
-  version: 4,
+  name: 'termin',
+  description: 'Db schema for termin application',
+  version: 1,
   driver: 'pg',
 
   authors: [
-    { name: 'Timur Shemsedinov', email: 'timur.shemsedinov@gmail.com' },
+    { name: 'Georg Oldenburger', email: 'georgoldenb@gmail.com' },
   ],
 });

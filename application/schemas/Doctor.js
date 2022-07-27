@@ -1,0 +1,5 @@
+({
+  Entity: {},
+
+  name: 'string',
+});

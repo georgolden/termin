@@ -1,45 +1,17 @@
 {
-  "name": "metarhia",
-  "version": "2.0.1",
-  "author": "Timur Shemsedinov <timur.shemsedinov@gmail.com>",
-  "description": "Metarhia Application Example",
+  "name": "termin",
+  "version": "0.0.0",
+  "author": "Georg Oldenburger <georgoldenb@gmail.com>",
+  "description": "Termin Application",
   "license": "MIT",
-  "keywords": [
-    "metarhia",
-    "starter",
-    "kit",
-    "cloud",
-    "impress",
-    "nodejs",
-    "example",
-    "websocket",
-    "api",
-    "application",
-    "server",
-    "rpc",
-    "soa",
-    "service",
-    "stateful",
-    "rest",
-    "restful",
-    "web",
-    "framework",
-    "router",
-    "routing",
-    "cluster",
-    "cache",
-    "http",
-    "https",
-    "websockets"
-  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/metarhia/Example"
+    "url": "https://github.com/georgolden/termin"
   },
   "bugs": {
-    "url": "https://github.com/metarhia/Example/issues"
+    "url": "https://github.com/georgolden/termin/issues"
   },
-  "homepage": "https://github.com/metarhia/Example",
+  "homepage": "https://github.com/georgolden/termin",
   "main": "server.js",
   "types": "types/global.d.ts",
   "scripts": {
@@ -47,27 +19,32 @@
     "types": "tsc",
     "lint": "eslint . && prettier -c \"**/*.js\" \"**/*.json\" \"**/*.md\" \"**/*.yml\" \"**/*.ts\"",
     "fmt": "prettier --write \"**/*.js\" \"**/*.json\" \"**/*.md\" \"**/*.yml\" \"**/*.ts\"",
-    "db": "metasql c"
+    "db": "metasql c",
+    "db:setup": "metasql c && node $(pwd)/scripts/dbSetup.js",
+    "db:recreate": "PGPASSWORD=postgres psql -h 127.0.0.1 -d termin -f db/recreate.sql -U postgres",
+    "db:migrate": "node $(pwd)/scripts/migration.js"
   },
   "engines": {
-    "node": "14 || 16 || 18"
+    "node": "16 || 18"
   },
   "devDependencies": {
-    "@types/node": "^18.0.4",
+    "@types/node": "^18.6.1",
     "@types/pg": "^8.6.0",
     "@types/ws": "^8.2.0",
-    "eslint": "^8.19.0",
-    "metatests": "^0.8.2",
-    "prettier": "^2.7.1",
-    "typescript": "^4.7.4",
+    "eslint": "^8.20.0",
     "eslint-config-metarhia": "^8.1.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.23.4",
-    "eslint-plugin-prettier": "^4.2.1"
+    "eslint-plugin-prettier": "^4.2.1",
+    "metatests": "^0.8.2",
+    "prettier": "^2.7.1",
+    "typescript": "^4.7.4"
   },
   "dependencies": {
-    "impress": "^3.0.0-alpha.2",
-    "metasql": "^2.0.4",
+    "@oldendev/mson": "^1.0.1",
+    "@oldendev/plugins": "^0.3.0",
+    "impress": "3.0.0-alpha.3",
+    "metasql": "^2.0.5",
     "pg": "^8.7.3",
     "redis": "^4.2.0"
   }
