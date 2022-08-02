@@ -38,5 +38,23 @@
       'delete',
       'schema',
     ],
+    City: [
+      'get',
+      'select',
+      'subscribe',
+      'create',
+      'update',
+      'delete',
+      'schema',
+    ],
+    Country: [
+      'get',
+      'select',
+      'subscribe',
+      'create',
+      'update',
+      'delete',
+      'schema',
+    ],
   },
 });

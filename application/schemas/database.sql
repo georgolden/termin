@@ -109,6 +109,22 @@ CREATE TABLE "CalendarTermin" (
 ALTER TABLE "CalendarTermin" ADD CONSTRAINT "pkCalendarTermin" PRIMARY KEY ("calendarId", "terminId");
 ALTER TABLE "CalendarTermin" ADD CONSTRAINT "fkCalendarTerminCalendar" FOREIGN KEY ("calendarId") REFERENCES "Calendar" ("calendarId") ON DELETE CASCADE;
 ALTER TABLE "CalendarTermin" ADD CONSTRAINT "fkCalendarTerminTermin" FOREIGN KEY ("terminId") REFERENCES "Termin" ("terminId") ON DELETE CASCADE;
+CREATE TABLE "Country" (
+  "countryId" bigint generated always as identity,
+  "name" varchar NOT NULL
+);
+
+ALTER TABLE "Country" ADD CONSTRAINT "pkCountry" PRIMARY KEY ("countryId");
+CREATE UNIQUE INDEX "akCountryName" ON "Country" ("name");
+CREATE TABLE "City" (
+  "cityId" bigint generated always as identity,
+  "name" varchar NOT NULL,
+  "countryId" bigint NOT NULL
+);
+
+ALTER TABLE "City" ADD CONSTRAINT "pkCity" PRIMARY KEY ("cityId");
+CREATE UNIQUE INDEX "akCityName" ON "City" ("name");
+ALTER TABLE "City" ADD CONSTRAINT "fkCityCountry" FOREIGN KEY ("countryId") REFERENCES "Country" ("countryId");
 CREATE TABLE "Session" (
   "sessionId" bigint generated always as identity,
   "accountId" bigint NOT NULL,
