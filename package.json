@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@oldendev/mson": "^1.0.1",
-    "@oldendev/plugins": "^0.4.0",
+    "@oldendev/plugins": "^0.5.0",
     "impress": "3.0.0-alpha.3",
     "metasql": "^2.0.5",
     "pg": "^8.7.3",
