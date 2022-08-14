@@ -23,7 +23,8 @@
     "db:setup": "metasql c && node $(pwd)/scripts/dbSetup.js",
     "db:recreate": "PGPASSWORD=postgres psql -h 127.0.0.1 -d termin -f db/recreate.sql -U postgres",
     "db:data": "PGPASSWORD=postgres psql -h 127.0.0.1 -d termin -f db/data.sql -U postgres",
-    "db:migrate": "node $(pwd)/scripts/migration.js"
+    "db:migrate": "node $(pwd)/scripts/migration.js",
+    "start": "node server.js"
   },
   "engines": {
     "node": "16 || 18"
@@ -44,6 +45,7 @@
   "dependencies": {
     "@oldendev/mson": "^1.0.1",
     "@oldendev/plugins": "^0.5.0",
+    "dbffile": "^1.8.1",
     "impress": "3.0.0-alpha.3",
     "metasql": "^2.0.5",
     "pg": "^8.7.3",
