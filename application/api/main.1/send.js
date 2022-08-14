@@ -1,4 +1,4 @@
 async () => {
-  console.log(npm.DBFFile);
+  console.log(npm.dbffile.DBFFile);
   return 'ok';
 };

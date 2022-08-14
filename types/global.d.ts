@@ -6,6 +6,10 @@
 import * as _impress from 'impress';
 
 import * as _metasql from 'metasql';
+import * as _ws from 'ws';
+import * as _pg from 'pg';
+import * as _dbffile from 'dbffile';
+import * as _redis from 'redis';
 import { Database } from 'metasql';
 
 declare global {
@@ -21,5 +25,12 @@ declare global {
 
   namespace db {
     const pg: Database;
+  }
+
+  namespace npm {
+    const ws: typeof _ws;
+    const pg: typeof _pg;
+    const dbffile: typeof _dbffile;
+    const redis: typeof _redis;
   }
 }
