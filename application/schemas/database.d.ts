@@ -18,6 +18,13 @@ interface Action {
 
 interface Doctor {
   name: string;
+  nameUk: string;
+  nameRu: string;
+  specialization: string;
+  specializationUk: string;
+  specializationRu: string;
+  cod: number;
+  Image: string;
   doctorId?: string;
 }
 
@@ -33,6 +40,7 @@ interface Patient {
   gender: string;
   phone: string;
   birthDate: string;
+  cod: number;
   patientId?: string;
 }
 
@@ -66,12 +74,14 @@ interface Calendar {
 
 interface Country {
   name: string;
+  cod: number;
   countryId?: string;
 }
 
 interface City {
   name: string;
   countryId: string;
+  cod: number;
   cityId?: string;
 }
 

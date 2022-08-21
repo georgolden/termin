@@ -31,7 +31,14 @@ CREATE TABLE "Action" (
 ALTER TABLE "Action" ADD CONSTRAINT "pkAction" PRIMARY KEY ("actionId");
 CREATE TABLE "Doctor" (
   "doctorId" bigint generated always as identity,
-  "name" varchar NOT NULL
+  "name" varchar NOT NULL,
+  "nameUk" varchar NOT NULL DEFAULT '',
+  "nameRu" varchar NOT NULL DEFAULT '',
+  "specialization" varchar NOT NULL DEFAULT '',
+  "specializationUk" varchar NOT NULL DEFAULT '',
+  "specializationRu" varchar NOT NULL DEFAULT '',
+  "cod" integer NOT NULL DEFAULT 0,
+  "Image" varchar NOT NULL DEFAULT ''
 );
 
 ALTER TABLE "Doctor" ADD CONSTRAINT "pkDoctor" PRIMARY KEY ("doctorId");
@@ -48,7 +55,8 @@ CREATE TABLE "Patient" (
   "surname" varchar NOT NULL,
   "gender" varchar NOT NULL,
   "phone" varchar NOT NULL,
-  "birthDate" timestamp with time zone NOT NULL
+  "birthDate" timestamp with time zone NOT NULL,
+  "cod" integer NOT NULL
 );
 
 ALTER TABLE "Patient" ADD CONSTRAINT "pkPatient" PRIMARY KEY ("patientId");
@@ -111,7 +119,8 @@ ALTER TABLE "CalendarTermin" ADD CONSTRAINT "fkCalendarTerminCalendar" FOREIGN K
 ALTER TABLE "CalendarTermin" ADD CONSTRAINT "fkCalendarTerminTermin" FOREIGN KEY ("terminId") REFERENCES "Termin" ("terminId") ON DELETE CASCADE;
 CREATE TABLE "Country" (
   "countryId" bigint generated always as identity,
-  "name" varchar NOT NULL
+  "name" varchar NOT NULL,
+  "cod" integer NOT NULL
 );
 
 ALTER TABLE "Country" ADD CONSTRAINT "pkCountry" PRIMARY KEY ("countryId");
@@ -119,7 +128,8 @@ CREATE UNIQUE INDEX "akCountryName" ON "Country" ("name");
 CREATE TABLE "City" (
   "cityId" bigint generated always as identity,
   "name" varchar NOT NULL,
-  "countryId" bigint NOT NULL
+  "countryId" bigint NOT NULL,
+  "cod" integer NOT NULL
 );
 
 ALTER TABLE "City" ADD CONSTRAINT "pkCity" PRIMARY KEY ("cityId");
