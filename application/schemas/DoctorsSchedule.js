@@ -2,7 +2,7 @@
   Entity: {},
 
   doctor: 'Doctor',
-  date: 'datetime',
+  date: 'date',
   startTime: 'datetime',
   endTime: 'datetime',
 });

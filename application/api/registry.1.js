@@ -56,5 +56,14 @@
       'delete',
       'schema',
     ],
+    DoctorsSchedule: [
+      'get',
+      'select',
+      'subscribe',
+      'create',
+      'update',
+      'delete',
+      'schema',
+    ],
   },
 });
