@@ -135,6 +135,16 @@ CREATE TABLE "City" (
 ALTER TABLE "City" ADD CONSTRAINT "pkCity" PRIMARY KEY ("cityId");
 CREATE UNIQUE INDEX "akCityName" ON "City" ("name");
 ALTER TABLE "City" ADD CONSTRAINT "fkCityCountry" FOREIGN KEY ("countryId") REFERENCES "Country" ("countryId");
+CREATE TABLE "DoctorsSchedule" (
+  "doctorsScheduleId" bigint generated always as identity,
+  "doctorId" bigint NOT NULL,
+  "date" date NOT NULL,
+  "startTime" timestamp with time zone NOT NULL,
+  "endTime" timestamp with time zone NOT NULL
+);
+
+ALTER TABLE "DoctorsSchedule" ADD CONSTRAINT "pkDoctorsSchedule" PRIMARY KEY ("doctorsScheduleId");
+ALTER TABLE "DoctorsSchedule" ADD CONSTRAINT "fkDoctorsScheduleDoctor" FOREIGN KEY ("doctorId") REFERENCES "Doctor" ("doctorId");
 CREATE TABLE "Session" (
   "sessionId" bigint generated always as identity,
   "accountId" bigint NOT NULL,

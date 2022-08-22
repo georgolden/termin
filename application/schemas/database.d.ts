@@ -85,6 +85,14 @@ interface City {
   cityId?: string;
 }
 
+interface DoctorsSchedule {
+  doctorId: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  doctorsScheduleId?: string;
+}
+
 interface Session {
   accountId: string;
   token: string;
